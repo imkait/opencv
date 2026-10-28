@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="416" viewBox="0 0 640 416" role="img" aria-labelledby="title desc">
+  <title id="title">表情分類概念示意圖</title><desc id="desc">攝影機人臉偵測框旁顯示表情分類標籤以及示意分數。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#2f6466"/><stop offset="1" stop-color="#102b33"/></linearGradient><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#98c1ae" opacity=".12"/></pattern></defs>
+  <rect width="640" height="416" fill="url(#bg)"/><rect width="640" height="416" fill="url(#grid)"/>
+  <text x="32" y="34" fill="#d6fb69" font-family="monospace" font-size="12" letter-spacing="2">LIVE / EXPRESSION</text>
+  <path d="M58 416c0-90 80-136 164-136s164 46 164 136" fill="#193b44"/><ellipse cx="223" cy="188" rx="69" ry="88" fill="#b5b9a2"/><path d="M156 162c-1-52 22-82 67-82 46 0 71 31 68 80-29-27-56-34-80-31-26 3-42 15-55 33" fill="#19383d"/>
+  <g stroke="#35515a" stroke-width="4" fill="none"><path d="M180 186q18-9 33 0"/><path d="M235 186q18-9 33 0"/><path d="M198 225q27 29 55 0"/></g>
+  <rect x="142" y="91" width="161" height="202" fill="none" stroke="#d6fb69" stroke-width="3"/><rect x="141" y="74" width="130" height="18" fill="#d6fb69"/><text x="148" y="87" fill="#10282d" font-family="monospace" font-size="10" font-weight="bold">FACE DETECTED</text>
+  <rect x="390" y="114" width="210" height="221" fill="#d6fb69"/><text x="408" y="146" fill="#10282d" font-family="monospace" font-size="12" font-weight="bold">MODEL OUTPUT</text><path d="M407 158h175" stroke="#849f55"/>
+  <text x="408" y="195" fill="#10282d" font-family="monospace" font-size="20" font-weight="bold">HAPPY?</text><text x="408" y="221" fill="#36524e" font-family="monospace" font-size="11">SAMPLE RESULT</text>
+  <rect x="408" y="252" width="169" height="9" fill="#91ae63"/><rect x="408" y="252" width="121" height="9" fill="#0c6e70"/><text x="408" y="291" fill="#36524e" font-family="monospace" font-size="11">CHECK THE CONTEXT</text>
+</svg>

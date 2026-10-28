@@ -1,0 +1,319 @@
+<!doctype html>
+<html lang="zh-TW">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="給高中生的 OpenCV 入門教材：四個附註解的基礎程式、四個攝影機核心實作，以及 AI Agent 提示詞與延伸挑戰。">
+  <title>OpenCV 視覺實驗室｜高中生的電腦視覺入門</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;600;700;800&family=Noto+Serif+TC:wght@600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main">跳至主要內容</a>
+  <header class="site-header">
+    <div class="header-inner">
+      <a class="brand" href="#top" aria-label="楠梓高中 OpenCV 視覺實驗室，返回首頁">
+        <img class="school-logo" src="https://www.nths.kh.edu.tw/images/nths_s.png" data-fallback="assets/nths.png" alt="" width="56" height="46">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>OPEN<span class="brand-accent">VISION</span><small>LAB / 高中入門</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主要導覽">
+        <a href="#concept">認識 OpenCV</a>
+        <a href="#setup">開始準備</a>
+        <a href="#basics">基礎實作</a>
+        <a href="#lessons">核心實作</a>
+        <a href="#review">複習</a>
+      </nav>
+      <button class="mode-button" id="mode-button" type="button" aria-pressed="false" title="放大教材字體供投影使用">
+        <span aria-hidden="true">▣</span> 投影模式
+      </button>
+    </div>
+  </header>
+
+  <main id="main" tabindex="-1">
+    <section class="hero section-wrap" id="top" aria-labelledby="hero-title">
+      <div class="hero-copy">
+        <p class="eyebrow"><span class="eyebrow-line"></span> COMPUTER VISION / 001</p>
+        <h1 id="hero-title">讓電腦<br><em>看見</em>世界。</h1>
+        <p class="hero-lead">從一台攝影機開始，認識 OpenCV 如何讀取畫面、找到人臉、辨識物品，並把想法變成自己的視覺作品。</p>
+        <div class="hero-actions">
+          <a class="button button-primary" href="#concept">開始探索 <span aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#basics">先做四個基礎實作 <span aria-hidden="true">↓</span></a>
+        </div>
+        <div class="hero-meta" aria-label="課程資訊">
+          <span>對象：高中生・OpenCV 初學者</span>
+          <span>環境：Windows + VS Code + Agent + uv + Python</span>
+        </div>
+      </div>
+      <div class="hero-visual" aria-label="示意圖：攝影機畫面中的人臉框與物件辨識標籤" role="img">
+        <div class="visual-grid" aria-hidden="true"></div>
+        <div class="camera-topline"><span class="live-dot"></span> LIVE FEED <span>CAM 01 / 640 × 480</span></div>
+        <div class="silhouette" aria-hidden="true"><div class="head"></div><div class="neck"></div><div class="shoulders"></div></div>
+        <div class="detect-frame" aria-hidden="true"><span class="frame-label">FACE DETECTED <b>0.97</b></span></div>
+        <div class="crosshair crosshair-a" aria-hidden="true">＋</div>
+        <div class="crosshair crosshair-b" aria-hidden="true">＋</div>
+        <div class="camera-bottomline"><span>● RECORDING: OFF</span><span>PROCESSING / 24 FPS</span></div>
+        <div class="visual-stamp" aria-hidden="true">SEE<br>THE<br>LOGIC<span>↗</span></div>
+      </div>
+      <div class="hero-index" aria-hidden="true">01 — 04 <span>SCROLL TO EXPLORE</span></div>
+    </section>
+
+    <section class="intro-band" aria-label="課程主題概覽">
+      <div class="section-wrap band-inner">
+        <p>一門課，四種看見方式。</p>
+        <div><span>01 影像分類</span><span>02 人臉偵測</span><span>03 表情分類</span><span>04 人臉比對</span></div>
+      </div>
+    </section>
+
+    <section class="section-wrap content-section" id="concept" aria-labelledby="concept-title">
+      <div class="section-heading">
+        <p class="section-kicker">01 / THE IDEA</p>
+        <h2 id="concept-title">電腦「看見」<br>是怎麼一回事？</h2>
+        <p>攝影機只取得畫面。讓畫面變成可分析的資料，才是電腦視覺的起點。</p>
+      </div>
+      <div class="concept-grid">
+        <article class="concept-card concept-feature">
+          <span class="card-number">/ 01</span>
+          <h3>OpenCV 是什麼？</h3>
+          <p>OpenCV 是開放原始碼的電腦視覺與機器學習軟體函式庫。它提供讀取影像、處理畫面、使用攝影機與執行模型等工具，讓我們不用從零打造每一個步驟。</p>
+          <a class="inline-link" href="https://opencv.org/about/" target="_blank" rel="noopener noreferrer">查看 OpenCV 官方介紹 <span aria-hidden="true">↗</span></a>
+        </article>
+        <article class="concept-card">
+          <span class="card-number">/ 02</span>
+          <h3>OpenCV 和 AI 模型有什麼不同？</h3>
+          <p>OpenCV 負責取得與處理畫面，也能執行模型；模型則依訓練結果做分類或辨識。本教材使用 <a href="https://github.com/opencv/opencv_zoo" target="_blank" rel="noopener noreferrer">OpenCV Zoo</a> 收錄的模型與範例。</p>
+        </article>
+        <article class="concept-card">
+          <span class="card-number">/ 03</span>
+          <h3>為什麼重要？</h3>
+          <p>從掃描 QR Code、讀取文件，到機器人與影像輔助工具，都需要讓程式理解畫面。學會這套流程，也就能開始設計自己的視覺應用。</p>
+        </article>
+      </div>
+      <div class="pipeline" aria-label="電腦視覺處理流程">
+        <strong>一個影格的旅程</strong>
+        <ol><li>攝影機<br><small>取得畫面</small></li><li>OpenCV<br><small>讀取與整理</small></li><li>模型<br><small>分析特徵</small></li><li>畫面回饋<br><small>呈現結果</small></li></ol>
+      </div>
+    </section>
+
+    <section class="setup-section" id="setup" aria-labelledby="setup-title">
+      <div class="section-wrap">
+        <div class="section-heading split-heading">
+          <div><p class="section-kicker">02 / GET READY</p><h2 id="setup-title">把實驗室<br>準備好。</h2></div>
+          <p>每位學生在自己的 Windows 電腦，用 VS Code、AI Agent、uv 與 Python 執行程式。這個網站是教材，不會要求瀏覽器直接開啟攝影機。</p>
+        </div>
+        <div class="setup-grid">
+          <div class="setup-steps">
+            <article class="step"><span>01</span><div><h3>確認工具</h3><p>安裝 VS Code、Python 與 uv，並確認攝影機能被 Windows 使用。uv 的安裝方式依<a href="https://docs.astral.sh/uv/getting-started/installation/" target="_blank" rel="noopener noreferrer">官方安裝指南</a>操作。</p></div></article>
+            <article class="step"><span>02</span><div><h3>建立練習專案</h3><p>在 VS Code 終端機執行右側指令。uv 會管理專案環境與套件；每個人都在自己的資料夾練習。</p></div></article>
+            <article class="step"><span>03</span><div><h3>先動手，再交給 Agent</h3><p>先執行下方的四個基礎程式並修改參數；進入核心實作時，再把提示詞交給 AI Agent，親自驗收攝影機畫面。</p></div></article>
+          </div>
+          <div class="terminal-card">
+            <div class="terminal-title"><span class="terminal-lights" aria-hidden="true">● ● ●</span><span>PowerShell / VS Code 終端機</span></div>
+            <p>建立專案並安裝基本套件，新增資料夾mycv，並用VsCode開啟</p>
+            <pre><code>uv init
+uv add opencv-python
+uv run python -c "import cv2; print(cv2.__version__)"</code></pre>
+            <p class="terminal-note">看到 OpenCV 版本號，就代表套件已可匯入。模型檔依各課連結取得；若 Agent 加入其他依賴，請它說明原因並使用 <code>uv add</code>。<a href="https://docs.astral.sh/uv/guides/projects/" target="_blank" rel="noopener noreferrer">uv 專案操作說明 ↗</a></p>
+          </div>
+        </div>
+        <aside class="callout"><span class="callout-icon" aria-hidden="true">!</span><p><strong>開課前的小檢查：</strong>先關閉正在使用攝影機的會議軟體；如果程式讀不到鏡頭，檢查 Windows 攝影機權限、裝置是否被占用，以及程式使用的攝影機編號。</p></aside>
+      </div>
+    </section>
+
+    <section class="section-wrap basics-section" id="basics" aria-labelledby="basics-title">
+      <div class="section-heading">
+        <p class="section-kicker">03 / FIRST STEPS</p>
+        <h2 id="basics-title">先自己動手，<br>讓畫面動起來。</h2>
+        <p>這四個練習不需要模型。將程式碼存成標示的檔名，放在剛才建立的 <code>vision-lab</code> 根目錄；在同一個目錄執行指令。每段程式都能獨立執行，先觀察效果，再試著改一行。</p>
+      </div>
+      <nav class="basics-links" aria-label="四個基礎實作導覽"><a href="#basic-camera">01 讀取鏡頭</a><a href="#basic-gray">02 灰階與效果</a><a href="#basic-flip">03 鏡像翻轉</a><a href="#basic-save">04 儲存畫面</a></nav>
+
+      <article class="basic-card" id="basic-camera" aria-labelledby="basic-camera-title">
+        <div class="basic-info"><span class="basic-number">01 / CAMERA</span><h3 id="basic-camera-title">讀取鏡頭</h3><p>從編號 0 的攝影機不斷取得影格並顯示。按 <kbd>q</kbd> 結束；若是外接攝影機，可試著把 0 改成 1。後面三個練習也能用相同方式調整攝影機設定。</p><p class="basic-run">檔名 <code>basic_camera.py</code><br>執行 <code>uv run python basic_camera.py</code></p><p class="basic-question">觀察：為何沒有迴圈，就只會取得一張畫面？</p></div>
+        <div class="basic-code"><div class="basic-code-head"><span>PYTHON / 直接複製到檔案</span><button class="copy-button" type="button" data-copy="code-basic-camera" aria-label="複製讀取鏡頭程式碼">複製程式碼 ↗</button></div><pre><code id="code-basic-camera">import cv2
+
+<span class="code-comment"># 0 通常代表預設攝影機；若有多台攝影機，可嘗試改成 1。</span>
+camera = cv2.VideoCapture(0)
+<span class="code-comment"># Windows 若開啟鏡頭很慢，可試試 cv2.VideoCapture(0, cv2.CAP_DSHOW)。</span>
+<span class="code-comment"># cv2.CAP_DSHOW 指定 DirectShow 後端；是否更快會因電腦而異。</span>
+if not camera.isOpened():
+    raise SystemExit("無法開啟攝影機，請檢查權限或是否被其他程式占用。")
+
+try:
+    while True:
+        <span class="code-comment"># read() 每次讀取一張影格；success 表示是否成功。</span>
+        success, frame = camera.read()
+        if not success:
+            print("無法讀取攝影機畫面。")
+            break
+
+        cv2.imshow("Camera", frame)  <span class="code-comment"># 顯示目前這張影格。</span>
+        <span class="code-comment"># waitKey(1) 讓視窗更新，也等待鍵盤輸入約 1 毫秒。</span>
+        if cv2.waitKey(1) &amp; 0xFF == ord("q"):
+            break  <span class="code-comment"># 按 q 離開迴圈。</span>
+finally:
+    camera.release()  <span class="code-comment"># 即使讀取失敗，也要歸還攝影機。</span>
+    cv2.destroyAllWindows()  <span class="code-comment"># 關閉 OpenCV 建立的視窗。</span></code></pre></div>
+      </article>
+
+      <article class="basic-card" id="basic-gray" aria-labelledby="basic-gray-title">
+        <div class="basic-info"><span class="basic-number">02 / EFFECTS</span><h3 id="basic-gray-title">灰階與其他效果</h3><p>將彩色影格轉成灰階，觀察顏色資訊消失後留下的明暗。這裡的「黑白」是有深淺的<strong>灰階</strong>，不是只有純黑與純白。</p><p class="basic-run">檔名 <code>basic_grayscale.py</code><br>執行 <code>uv run python basic_grayscale.py</code></p><div class="basic-explore"><strong>改一行，試其他效果</strong><p>把程式中的 <code>processed = ...</code> 換成下列其中一行：</p><ul><li>柔焦：<code>processed = cv2.GaussianBlur(frame, (21, 21), 0)</code></li><li>負片：<code>processed = cv2.bitwise_not(frame)</code></li><li>邊緣線條：<code>processed = cv2.Canny(cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY), 80, 160)</code></li></ul><p>一次只選一行，再比較畫面差異；Canny 的兩個數字是邊緣偵測門檻。</p></div></div>
+        <div class="basic-code"><div class="basic-code-head"><span>PYTHON / 直接複製到檔案</span><button class="copy-button" type="button" data-copy="code-basic-gray" aria-label="複製灰階處理程式碼">複製程式碼 ↗</button></div><pre><code id="code-basic-gray">import cv2
+
+<span class="code-comment"># 建立攝影機物件；0 是預設攝影機編號。</span>
+camera = cv2.VideoCapture(0)
+if not camera.isOpened():
+    raise SystemExit("無法開啟攝影機，請檢查攝影機權限。")
+
+try:
+    while True:
+        success, frame = camera.read()
+        if not success:
+            print("無法讀取攝影機畫面。")
+            break
+
+        <span class="code-comment"># 攝影機的彩色畫面通常是 BGR 通道順序。</span>
+        <span class="code-comment"># COLOR_BGR2GRAY 將它轉成單通道灰階影像。</span>
+        <span class="code-comment"># 想試柔焦、負片或邊緣效果，只需改下一行。</span>
+        processed = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+        cv2.imshow("Grayscale", processed)
+
+        <span class="code-comment"># 每次迴圈檢查鍵盤；按 q 就結束。</span>
+        if cv2.waitKey(1) &amp; 0xFF == ord("q"):
+            break
+finally:
+    camera.release()
+    cv2.destroyAllWindows()</code></pre></div>
+      </article>
+
+      <article class="basic-card" id="basic-flip" aria-labelledby="basic-flip-title">
+        <div class="basic-info"><span class="basic-number">03 / FLIP</span><h3 id="basic-flip-title">鏡像翻轉</h3><p>預設把畫面左右翻轉，讓你移動左手時，螢幕中的影像像照鏡子一樣移動。親自把參數改成 0 或 -1，看看畫面如何改變。</p><p class="basic-run">檔名 <code>basic_flip.py</code><br>執行 <code>uv run python basic_flip.py</code></p><p class="basic-question">試試看：舉起左手，分別在參數 1、0、-1 下觀察畫面。</p></div>
+        <div class="basic-code"><div class="basic-code-head"><span>PYTHON / 直接複製到檔案</span><button class="copy-button" type="button" data-copy="code-basic-flip" aria-label="複製鏡像翻轉程式碼">複製程式碼 ↗</button></div><pre><code id="code-basic-flip">import cv2
+
+<span class="code-comment"># 開啟預設攝影機。</span>
+camera = cv2.VideoCapture(0)
+if not camera.isOpened():
+    raise SystemExit("無法開啟攝影機，請檢查攝影機權限。")
+
+try:
+    while True:
+        success, frame = camera.read()
+        if not success:
+            print("無法讀取攝影機畫面。")
+            break
+
+        <span class="code-comment"># flip() 的第二個參數決定翻轉方向：</span>
+        <span class="code-comment">#  1：左右翻轉，像照鏡子；0：上下翻轉。</span>
+        <span class="code-comment"># -1：左右與上下都翻轉。試著改成 0 或 -1！</span>
+        mirrored = cv2.flip(frame, 1)
+        cv2.imshow("Mirror", mirrored)
+
+        if cv2.waitKey(1) &amp; 0xFF == ord("q"):
+            break
+finally:
+    camera.release()
+    cv2.destroyAllWindows()</code></pre></div>
+      </article>
+
+      <article class="basic-card" id="basic-save" aria-labelledby="basic-save-title">
+        <div class="basic-info"><span class="basic-number">04 / SNAPSHOT</span><h3 id="basic-save-title">把畫面存成檔案</h3><p>按 <kbd>s</kbd> 將當下影格存成工作目錄中的 <code>snapshot.png</code>，按 <kbd>q</kbd> 離開。再次按 <kbd>s</kbd> 會覆蓋前一張；想保留照片，先替檔案改名。</p><p class="basic-run">檔名 <code>basic_snapshot.py</code><br>執行 <code>uv run python basic_snapshot.py</code></p><p class="basic-question">觀察：存下來的是哪一個瞬間？檔案實際出現在哪裡？</p></div>
+        <div class="basic-code"><div class="basic-code-head"><span>PYTHON / 直接複製到檔案</span><button class="copy-button" type="button" data-copy="code-basic-save" aria-label="複製儲存畫面程式碼">複製程式碼 ↗</button></div><pre><code id="code-basic-save">import cv2
+
+<span class="code-comment"># 檔名沒有資料夾路徑，會存到執行指令時的工作目錄。</span>
+filename = "snapshot.png"
+camera = cv2.VideoCapture(0)
+if not camera.isOpened():
+    raise SystemExit("無法開啟攝影機，請檢查攝影機權限。")
+
+try:
+    while True:
+        success, frame = camera.read()
+        if not success:
+            print("無法讀取攝影機畫面。")
+            break
+
+        cv2.imshow("Snapshot - s: save, q: quit", frame)
+        key = cv2.waitKey(1) &amp; 0xFF
+        if key == ord("q"):
+            break
+        if key == ord("s"):
+            <span class="code-comment"># imwrite() 將目前影格存成 PNG；同名檔案會被覆蓋。</span>
+            if cv2.imwrite(filename, frame):
+                print(f"已儲存：{filename}")
+            else:
+                print("儲存失敗，請檢查資料夾權限。")
+finally:
+    camera.release()
+    cv2.destroyAllWindows()</code></pre></div>
+      </article>
+      <p class="basics-source">本節 API 參考：<a href="https://docs.opencv.org/4.x/dd/d43/tutorial_py_video_display.html" target="_blank" rel="noopener noreferrer">攝影機讀取</a>、<a href="https://docs.opencv.org/4.x/d0/da7/videoio_overview.html" target="_blank" rel="noopener noreferrer">攝影機後端</a>、<a href="https://docs.opencv.org/4.x/df/d9d/tutorial_py_colorspaces.html" target="_blank" rel="noopener noreferrer">色彩轉換</a>、<a href="https://docs.opencv.org/4.x/d2/de8/group__core__array.html" target="_blank" rel="noopener noreferrer">影像翻轉</a>、<a href="https://docs.opencv.org/4.x/d4/da8/group__imgcodecs.html" target="_blank" rel="noopener noreferrer">影像存檔</a>。</p>
+    </section>
+
+    <section class="section-wrap lessons-intro" id="lessons" aria-labelledby="lessons-title">
+      <p class="section-kicker">04 / CORE LABS</p>
+      <h2 id="lessons-title">四個核心實作，<br><em>從鏡頭開始。</em></h2>
+      <p>老師先帶大家完成基本功能。每課都附一段可直接交給 Agent 的提示詞與成功條件；部分課程接著提供學生自行探索的延伸作品。</p>
+      <div class="lesson-links" aria-label="四個核心實作導覽"><a href="#lab-classify">01 影像分類</a><a href="#lab-detect">02 人臉偵測</a><a href="#lab-expression">03 表情分類</a><a href="#lab-recognize">04 人臉比對</a></div>
+    </section>
+
+    <article class="lab section-wrap" id="lab-classify" aria-labelledby="classify-title">
+      <div class="lab-head"><span class="lab-numeral">01</span><div><p class="section-kicker">CLASSIFICATION / 核心實作</p><h2 id="classify-title">鏡頭前的物品，<br>電腦猜得到嗎？</h2><p>把生活用品拿到攝影機前，觀察模型如何替整個畫面選出類別。</p></div><span class="lab-tag">模型：MobileNet</span></div>
+      <div class="lab-layout">
+        <div class="lab-visual classify-visual" role="img" aria-label="示意畫面：攝影機中的杯子，旁邊顯示模型的前三個分類結果">
+          <div class="visual-caption">LIVE / CLASSIFY</div><div class="cup" aria-hidden="true"><div class="cup-handle"></div></div>
+          <div class="result-panel" aria-hidden="true"><b>TOP PREDICTIONS</b><span>01 mug <i>72%</i></span><span>02 cup <i>18%</i></span><span>03 bottle <i>04%</i></span></div>
+          <small>示意畫面，數值非模型實際輸出</small>
+        </div>
+        <div class="lab-details"><div class="detail-block"><h3>先理解</h3><p>影像分類替<strong>整張畫面</strong>選類別，不會直接告訴你物品在畫面的哪裡。比較更換背景、角度與光線後，結果有沒有改變。</p></div><div class="detail-block"><h3>完成時應看見</h3><ul><li>攝影機畫面持續更新。</li><li>畫面顯示分類標籤與分數。</li><li>按指定按鍵或關閉視窗能結束程式。</li></ul></div><a class="source-link" href="https://github.com/opencv/opencv_zoo/tree/main/models/image_classification_mobilenet" target="_blank" rel="noopener noreferrer">官方 MobileNet 範例與模型來源 ↗</a></div>
+      </div>
+      <div class="prompt-panel"><div class="prompt-head"><div><span>給 AI AGENT 的核心提示詞</span><h3>建立即時影像分類程式</h3></div><button class="copy-button" type="button" data-copy="prompt-classify" aria-label="複製影像分類提示詞">複製提示詞 ↗</button></div><pre id="prompt-classify" class="prompt-text">請在目前工作目錄的根目錄建立 `camera_classification.py`。我正在 Windows 的 VS Code 專案中使用 uv 與 Python。請參考 OpenCV Zoo 官方 MobileNet 影像分類範例，建立使用電腦攝影機的即時影像分類程式。請先確認官方模型取得方式與授權，使用 OpenCV DNN 與 CPU 執行，不要假設有 GPU。以 uv add 管理依賴，說明每個新增檔案與模型放置位置。畫面請顯示分類標籤與分數，提供清楚的退出按鍵；攝影機或模型讀取失敗時顯示可理解的錯誤。最後給我 uv run 執行指令、驗收步驟，並用高中生能懂的話解釋「影像分類」在做什麼。不要使用雲端辨識 API。</pre></div>
+      <section class="extension-group" aria-labelledby="ext-classify"><div class="group-head"><span>01 / CLASSIFICATION</span><h3 id="ext-classify">延伸作品 · 影像分類</h3></div><div class="extension-grid">
+          <article class="extension-card"><span>A01</span><h4>前三名預測</h4><p>比較模型最有把握的三個答案，而不只看第一名。</p><pre id="ext-a01" class="prompt-text">請在目前工作目錄的根目錄建立 `classification_top3.py`，以已完成的核心程式 `camera_classification.py` 為基礎，保留核心原檔；以下修改都在新檔完成。請在我已完成的攝影機 MobileNet 分類程式上，只加入顯示前三名標籤與分數的功能。保留原有退出方式，不重寫整個專案。請說明如何驗收排序與分數。</pre><button class="copy-button" type="button" data-copy="ext-a01" aria-label="複製前三名預測挑戰提示詞">複製挑戰 ↗</button></article>
+          <article class="extension-card"><span>A02</span><h4>中文標籤</h4><p>為課堂常見物品建立小型翻譯對照，讓結果更好讀。</p><pre id="ext-a02" class="prompt-text">請在目前工作目錄的根目錄建立 `classification_chinese_labels.py`，以已完成的核心程式 `camera_classification.py` 為基礎，保留核心原檔；以下修改都在新檔完成。請在目前的攝影機影像分類程式加入可維護的中英文標籤對照。只翻譯有確認的類別，找不到對照時保留英文原標籤。請告訴我如何新增自己的翻譯並驗收。</pre><button class="copy-button" type="button" data-copy="ext-a02" aria-label="複製中文標籤挑戰提示詞">複製挑戰 ↗</button></article>
+        </div>
+      </section>
+    </article>
+
+    <article class="lab section-wrap" id="lab-detect" aria-labelledby="detect-title">
+      <div class="lab-head"><span class="lab-numeral">02</span><div><p class="section-kicker">FACE DETECTION / 核心實作</p><h2 id="detect-title">找到人臉，<br>再決定要做什麼。</h2><p>讓畫面中的人臉出現框線。框住的位置，就是下一步加工的依據。</p></div><span class="lab-tag">模型：YuNet</span></div>
+      <div class="lab-layout"><div class="lab-visual photo-visual"><img loading="lazy" src="assets/detect.svg" alt="示意圖：攝影機畫面中的三張人臉各有一個偵測框"><div class="photo-credit">概念示意圖 / 查看右側官方 YuNet 範例</div></div><div class="lab-details"><div class="detail-block"><h3>先理解</h3><p>人臉偵測回答「<strong>哪裡有人臉</strong>」，不回答「這個人是誰」。取得框的位置後，就能把該區域模糊、遮蔽或加上貼圖。</p></div><div class="detail-block"><h3>完成時應看見</h3><ul><li>攝影機畫面中的人臉出現框線。</li><li>移動位置後，框線能跟著更新。</li><li>沒有偵測到人臉時，程式不會中斷。</li></ul></div><a class="source-link" href="https://github.com/opencv/opencv_zoo/tree/main/models/face_detection_yunet" target="_blank" rel="noopener noreferrer">官方 YuNet 範例與模型來源 ↗</a></div></div>
+      <div class="prompt-panel"><div class="prompt-head"><div><span>給 AI AGENT 的核心提示詞</span><h3>建立即時人臉偵測程式</h3></div><button class="copy-button" type="button" data-copy="prompt-detect" aria-label="複製人臉偵測提示詞">複製提示詞 ↗</button></div><pre id="prompt-detect" class="prompt-text">請在目前工作目錄的根目錄建立 `camera_face_detection.py`。請在目前的 Windows、uv、Python 專案中，參考 OpenCV Zoo 官方 YuNet 範例製作攝影機即時人臉偵測。請確認適用的官方模型檔，並說明下載位置；不要寫死不確定的版本。用框線標出每張人臉，讓沒有偵測結果的影格也能正常顯示。以 CPU 執行，提供退出按鍵、攝影機權限或裝置占用時的排錯訊息，以及 uv run 執行指令。完成後請解釋偵測框的座標，以及它和辨識身分的差別。</pre></div>
+      <section class="extension-group" aria-labelledby="ext-detect"><div class="group-head"><span>02 / FACE DETECTION</span><h3 id="ext-detect">延伸作品 · 人臉偵測</h3></div><div class="extension-grid">
+          <article class="extension-card"><span>B01</span><h4>即時人臉馬賽克</h4><p>利用偵測框處理局部畫面，練習影像區域的概念。</p><pre id="ext-b01" class="prompt-text">請在目前工作目錄的根目錄建立 `face_mosaic.py`，以已完成的核心程式 `camera_face_detection.py` 為基礎，保留核心原檔；以下修改都在新檔完成。請在已完成的 YuNet 攝影機人臉偵測程式中，對每個偵測到的人臉區域加入馬賽克。只改變框內畫面，處理超出邊界或過小的人臉，沒有偵測到人臉時保留原畫面。請解釋偵測框如何對應到影像範圍。</pre><button class="copy-button" type="button" data-copy="ext-b01" aria-label="複製人臉馬賽克挑戰提示詞">複製挑戰 ↗</button></article>
+          <article class="extension-card"><span>B02</span><h4>大眼球濾鏡</h4><p>在眼睛位置畫上大眼球，讓它隨人臉移動。</p><pre id="ext-b02" class="prompt-text">請在目前工作目錄的根目錄建立 `face_sticker.py`，以已完成的核心程式 `camera_face_detection.py` 為基礎，保留核心原檔；以下修改都在新檔完成。請在 YuNet 攝影機人臉偵測程式，在眼睛的位置畫上大眼球，讓大眼球依人臉框的位置與大小移動。</pre><button class="copy-button" type="button" data-copy="ext-b02" aria-label="複製大眼球濾鏡挑戰提示詞">複製挑戰 ↗</button></article>
+          <article class="extension-card"><span>B03</span><h4>畫面人數統計</h4><p>偵測到幾張臉，就在角落顯示幾人。</p><pre id="ext-b03" class="prompt-text">請在目前工作目錄的根目錄建立 `face_count.py`，以已完成的核心程式 `camera_face_detection.py` 為基礎，保留核心原檔；以下修改都在新檔完成。請在 YuNet 攝影機人臉偵測程式加上目前影格的人臉數量顯示。數字要隨畫面更新，為 0 時也要正確顯示。請說明這是偵測到的人臉數，不保證等於真實在場人數。</pre><button class="copy-button" type="button" data-copy="ext-b03" aria-label="複製人數統計挑戰提示詞">複製挑戰 ↗</button></article>
+        </div>
+      </section>
+    </article>
+
+    <article class="lab section-wrap" id="lab-expression" aria-labelledby="expression-title">
+      <div class="lab-head"><span class="lab-numeral">03</span><div><p class="section-kicker">EXPRESSION / 核心實作</p><h2 id="expression-title">畫面中的表情，<br>模型怎麼分類？</h2><p>觀察同一張臉在不同表情、角度與光線下，模型給出什麼標籤。</p></div><span class="lab-tag">模型：YuNet + Progressive Teacher</span></div>
+      <div class="lab-layout"><div class="lab-visual photo-visual"><img loading="lazy" src="assets/expression.svg" alt="示意圖：人臉偵測框旁顯示表情分類標籤與模型分數"><div class="photo-credit">概念示意圖 / 查看右側官方表情分類範例</div></div><div class="lab-details"><div class="detail-block"><h3>先理解</h3><p>模型會把臉部影像分到幾種<strong>表情類別</strong>。表情標籤是影像分析結果，不能用來斷定一個人的真實感受或意圖。</p></div><div class="detail-block"><h3>完成時應看見</h3><ul><li>先偵測人臉，再在畫面顯示表情標籤。</li><li>變化表情時能觀察標籤是否改變。</li><li>看不清楚或偵測失敗時不會輸出假結果。</li></ul></div><a class="source-link" href="https://github.com/opencv/opencv_zoo/tree/main/models/facial_expression_recognition" target="_blank" rel="noopener noreferrer">官方表情分類範例與模型來源 ↗</a></div></div>
+      <div class="prompt-panel"><div class="prompt-head"><div><span>給 AI AGENT 的核心提示詞</span><h3>建立即時表情分類程式</h3></div><button class="copy-button" type="button" data-copy="prompt-expression" aria-label="複製表情分類提示詞">複製提示詞 ↗</button></div><pre id="prompt-expression" class="prompt-text">請在目前工作目錄的根目錄建立 `camera_expression.py`。請在目前的 Windows、uv、Python 專案中，參考 OpenCV Zoo 官方 facial_expression_recognition 範例，用攝影機建立即時表情分類程式。先以 YuNet 找人臉，再使用 Progressive Teacher 模型做表情分類；請核對模型來源與需要的檔案，以 CPU 執行。畫面顯示偵測框與表情標籤，沒有偵測到人臉時不要猜測表情。提供退出按鍵、uv run 指令、失敗時的排錯方式。最後用簡短文字說明模型辨識的是外觀表情，不代表真實心情，並設計兩個讓學生觀察誤判的實驗。</pre></div>
+      <section class="extension-group" aria-labelledby="ext-expression"><div class="group-head"><span>03 / EXPRESSION</span><h3 id="ext-expression">延伸作品 · 表情分類</h3></div><div class="extension-grid">
+          <article class="extension-card"><span>C01</span><h4>表情 emoji</h4><p>讓分類標籤變成更直覺的視覺符號。</p><pre id="ext-c01" class="prompt-text">請在目前工作目錄的根目錄建立 `expression_emoji.py`，以已完成的核心程式 `camera_expression.py` 為基礎，保留核心原檔；以下修改都在新檔完成。請在 YuNet 加 Progressive Teacher 的攝影機表情分類程式中，將每個表情類別對應到適當的 emoji，並與原始文字標籤一起顯示。沒有偵測到人臉時不要顯示 emoji。請把對照關係寫清楚，方便我修改。</pre><button class="copy-button" type="button" data-copy="ext-c01" aria-label="複製表情 emoji 挑戰提示詞">複製挑戰 ↗</button></article>
+          <article class="extension-card"><span>C02</span><h4>笑臉倒數拍照</h4><p>連續辨識到笑臉 3 秒後拍照，畫面顯示倒數與操作說明。</p><pre id="ext-c02" class="prompt-text">請在目前工作目錄的根目錄建立 `expression_smile_capture.py`，以已完成的核心程式 `camera_expression.py` 為基礎，保留核心原檔；以下修改都在新檔完成。請參照 OpenCV Zoo 表情模型的實際類別，以 `happy` 分類結果作為「笑臉」觸發條件，這只是模型對外觀表情的判斷。攝影機畫面請用 `cv2.putText` 持續顯示英文說明 `Keep smiling for 3 seconds` 和剩餘倒數秒數；若只有一張清楚的人臉且連續 3 秒都是 `happy`，就將當下影格拍照存到工作目錄根目錄，檔名加入時間以避免覆蓋。請用實際經過時間計時，不要用影格數推算；一旦表情改變、沒有偵測到人臉或同時出現多人，就重設倒數。拍照後以英文顯示 `Photo saved:` 與檔名，避免維持笑臉時連續拍照，必須先離開 `happy` 狀態才能再次啟動。保留退出按鍵與錯誤提示，最後提供 uv run 執行指令和驗收步驟。</pre><button class="copy-button" type="button" data-copy="ext-c02" aria-label="複製笑臉倒數拍照提示詞">複製挑戰 ↗</button></article>
+        </div>
+      </section>
+    </article>
+
+    <article class="lab section-wrap" id="lab-recognize" aria-labelledby="recognize-title">
+      <div class="lab-head"><span class="lab-numeral">04</span><div><p class="section-kicker">FACE MATCHING / 核心實作</p><h2 id="recognize-title">兩張人臉，<br>可能是同一人嗎？</h2><p>先選一張自己的參考照片，再和攝影機畫面中的人臉做相似度比對。</p></div><span class="lab-tag">模型：YuNet + SFace</span></div>
+      <div class="lab-layout"><div class="lab-visual photo-visual"><img loading="lazy" src="assets/match.svg" alt="示意圖：左側參考照片與右側攝影機畫面的人臉進行相似度比對"><div class="photo-credit">概念示意圖 / 查看右側官方 SFace 範例</div></div><div class="lab-details"><div class="detail-block"><h3>先理解</h3><p>這一課先用 YuNet 找到人臉，再用 SFace 比較<strong>兩張人臉的特徵相似度</strong>。分數需要適當門檻與測試，不能把模型輸出當成絕對身分證明。</p></div><div class="detail-block"><h3>完成時應看見</h3><ul><li>能選擇一張本人或獲同意的參考照片。</li><li>鏡頭偵測到人臉時，顯示比對結果。</li><li>無人臉、多人臉或讀不到照片時有清楚提示。</li></ul></div><a class="source-link" href="https://github.com/opencv/opencv_zoo/tree/main/models/face_recognition_sface" target="_blank" rel="noopener noreferrer">官方 SFace 範例與模型來源 ↗</a></div></div>
+      <div class="prompt-panel"><div class="prompt-head"><div><span>給 AI AGENT 的核心提示詞</span><h3>建立攝影機人臉比對程式</h3></div><button class="copy-button" type="button" data-copy="prompt-recognize" aria-label="複製人臉比對提示詞">複製提示詞 ↗</button></div><pre id="prompt-recognize" class="prompt-text">請在目前工作目錄的根目錄建立 `camera_face_matching.py`。請在目前的 Windows、uv、Python 專案中，參考 OpenCV Zoo 官方 SFace 人臉比對範例，延伸成「一張本機參考照片 vs. 攝影機即時畫面」的教學程式。先用 YuNet 偵測與對齊人臉，再用 SFace 計算相似度；請確認並說明兩個官方模型檔的來源。以 CPU 執行，不上傳或儲存攝影機影像。參考照片、鏡頭畫面沒有偵測到人臉，或鏡頭同時出現多人時，要明確提示並避免錯誤比對。請說明門檻的意義與可能誤判，提供 uv run 指令、退出方式和三種驗收情境。</pre></div>
+    </article>
+
+    <section class="section-wrap review-section" id="review" aria-labelledby="review-title"><div class="section-heading split-heading"><div><p class="section-kicker">05 / CHECK & REFLECT</p><h2 id="review-title">程式跑起來，<br>還要看得懂。</h2></div><p>AI Agent 可以幫忙寫程式，但你要能描述目標、測試結果，並判斷輸出是否合理。</p></div>
+      <div class="review-grid"><article><span>01 / 問題要具體</span><h3>向 Agent 說清楚</h3><p>說明使用 Windows、uv、Python、攝影機、官方模型與 CPU。指定畫面要顯示什麼、如何退出、錯誤時要怎麼提示。</p></article><article><span>02 / 錯誤要完整</span><h3>貼出真正的訊息</h3><p>遇到問題時，提供執行指令、完整錯誤訊息、相關檔案與你已嘗試的步驟。不要只說「程式壞了」。</p></article><article><span>03 / 結果要驗收</span><h3>動手改變條件</h3><p>換光線、角度、人數或物品，觀察模型怎麼變。模型會誤判；能說明限制，也是學習成果。</p></article></div>
+      <div class="reflection-box"><div><span>課後想一想</span><h3>同一個鏡頭，<br>能設計什麼新作品？</h3></div><ol><li>你的作品需要「分類」、「找位置」，還是「比較兩張影像」？</li><li>模型什麼時候可能判錯？你要如何測試？</li><li>你會怎麼向 AI Agent 描述下一個功能？</li></ol></div>
+      <div class="references"><h3>官方資料與來源</h3><ul><li><a href="https://opencv.org/about/" target="_blank" rel="noopener noreferrer">OpenCV 官方介紹 ↗</a></li><li><a href="https://docs.opencv.org/4.13.0/d6/d00/tutorial_py_root.html" target="_blank" rel="noopener noreferrer">OpenCV-Python 官方教學 ↗</a></li><li><a href="https://github.com/opencv/opencv_zoo" target="_blank" rel="noopener noreferrer">OpenCV Zoo 模型與範例 ↗</a></li><li><a href="https://docs.astral.sh/uv/guides/projects/" target="_blank" rel="noopener noreferrer">uv 官方專案指南 ↗</a></li></ul><p>本教材以官方範例作為起點；攝影機版的分類、人臉比對及各項延伸作品，是供課堂實作的改作任務。模型檔與授權資訊請以各官方範例目錄為準。</p></div>
+    </section>
+  </main>
+
+  <footer class="site-footer"><div class="section-wrap footer-inner"><div><strong>OPEN<span>VISION</span> LAB</strong><p>從看見畫面，到理解畫面。</p></div><a href="#top">回到頁首 ↑</a><small>OpenCV 入門教學 / 高中生篇</small></div></footer>
+  <div id="copy-status" class="sr-only" role="status" aria-live="polite"></div>
+</body>
+</html>

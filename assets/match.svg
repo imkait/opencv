@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="416" viewBox="0 0 640 416" role="img" aria-labelledby="title desc">
+  <title id="title">人臉比對概念示意圖</title><desc id="desc">左側參考照片與右側攝影機畫面的人臉，以線條連結進行相似度比對。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#244e54"/><stop offset="1" stop-color="#0d2630"/></linearGradient><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#98c1ae" opacity=".1"/></pattern></defs>
+  <rect width="640" height="416" fill="url(#bg)"/><rect width="640" height="416" fill="url(#grid)"/>
+  <text x="32" y="34" fill="#d6fb69" font-family="monospace" font-size="12" letter-spacing="2">YUNET + SFACE / MATCH</text>
+  <rect x="40" y="70" width="245" height="284" fill="#274b4f" stroke="#8fb6a8"/><rect x="355" y="70" width="245" height="284" fill="#193e46" stroke="#8fb6a8"/>
+  <text x="55" y="91" fill="#dcefe2" font-family="monospace" font-size="11">REFERENCE PHOTO</text><text x="370" y="91" fill="#dcefe2" font-family="monospace" font-size="11">CAMERA FEED</text>
+  <path d="M80 351c4-73 45-105 83-105 45 0 83 43 83 105" fill="#14343b"/><ellipse cx="165" cy="177" rx="54" ry="71" fill="#c2ad90"/><path d="M110 164c6-42 19-62 55-62 35 0 53 19 55 62-27-22-73-30-110 0" fill="#152d35"/>
+  <path d="M395 351c4-73 45-105 83-105 45 0 83 43 83 105" fill="#11343b"/><ellipse cx="480" cy="177" rx="54" ry="71" fill="#b5aa94"/><path d="M425 164c6-42 19-62 55-62 35 0 53 19 55 62-27-22-73-30-110 0" fill="#1b3338"/>
+  <rect x="101" y="101" width="127" height="156" fill="none" stroke="#d6fb69" stroke-width="3"/><rect x="416" y="101" width="127" height="156" fill="none" stroke="#d6fb69" stroke-width="3"/>
+  <path d="M283 198h73" stroke="#ff7659" stroke-width="3" stroke-dasharray="6 6"/><circle cx="320" cy="198" r="20" fill="#ff7659"/><text x="309" y="204" fill="#10282d" font-family="monospace" font-size="16" font-weight="bold">≈</text>
+  <rect x="221" y="320" width="199" height="49" fill="#d6fb69"/><text x="238" y="349" fill="#10282d" font-family="monospace" font-size="15" font-weight="bold">SIMILARITY / ?</text>
+</svg>
