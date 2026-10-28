@@ -2,6 +2,8 @@
 
 給高中生的 OpenCV 入門教學網站，供老師投影講解，也供學生課後複習。學生使用 Windows、VS Code、AI Agent、uv、Python 與攝影機，在自己的電腦上完成實作；網站本身不存取攝影機，也不記錄進度。
 
+公開網站：[https://imkait.github.io/opencv/](https://imkait.github.io/opencv/)
+
 ## 教材內容
 
 1. 電腦視覺與 OpenCV 的基本概念。
