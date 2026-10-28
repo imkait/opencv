@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="416" viewBox="0 0 640 416" role="img" aria-labelledby="title desc">
+  <title id="title">人臉偵測概念示意圖</title><desc id="desc">攝影機畫面中的三個人物，各有一個偵測框。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#305c5e"/><stop offset="1" stop-color="#102b33"/></linearGradient><pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse"><path d="M32 0H0V32" fill="none" stroke="#98c1ae" opacity=".12"/></pattern></defs>
+  <rect width="640" height="416" fill="url(#bg)"/><rect width="640" height="416" fill="url(#grid)"/>
+  <text x="30" y="34" fill="#d6fb69" font-family="monospace" font-size="12" letter-spacing="2">LIVE / YUNET</text><circle cx="580" cy="28" r="6" fill="#ff7659"/><text x="595" y="32" fill="#dcefe2" font-family="monospace" font-size="10">REC</text>
+  <path d="M30 392c0-58 59-105 132-105s132 47 132 105" fill="#10343b"/><ellipse cx="162" cy="193" rx="51" ry="69" fill="#c1ab91"/><path d="M110 178c1-46 19-71 56-71 42 0 61 27 49 67-19-30-40-29-60-24-16 5-30 18-45 28" fill="#17333a"/>
+  <path d="M255 392c0-71 59-120 135-120s135 49 135 120" fill="#245259"/><ellipse cx="392" cy="179" rx="60" ry="78" fill="#a9b9a7"/><path d="M332 155c0-48 26-79 64-79 50 0 70 34 57 91-21-28-45-37-72-31-20 5-31 11-49 19" fill="#183339"/>
+  <path d="M477 392c0-54 44-91 97-91 35 0 58 13 66 26v65" fill="#10353d"/><ellipse cx="566" cy="215" rx="38" ry="53" fill="#9aafa7"/><path d="M528 208c0-31 13-52 38-52 30 0 44 23 39 50-24-16-47-17-77 2" fill="#203b40"/>
+  <g fill="none" stroke="#d6fb69" stroke-width="3"><rect x="96" y="105" width="132" height="169"/><rect x="315" y="62" width="151" height="202"/><rect x="514" y="149" width="102" height="132"/></g>
+  <g fill="#d6fb69" font-family="monospace" font-size="10"><text x="98" y="98">FACE 01</text><text x="317" y="55">FACE 02</text><text x="516" y="142">FACE 03</text></g>
+</svg>
+
